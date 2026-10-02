@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35312.102
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SerialPortChatProgram", "SerialPortChatProgram\SerialPortChatProgram.csproj", "{704B96ED-B07B-476E-B133-53DC95217171}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{704B96ED-B07B-476E-B133-53DC95217171}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{704B96ED-B07B-476E-B133-53DC95217171}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{704B96ED-B07B-476E-B133-53DC95217171}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{704B96ED-B07B-476E-B133-53DC95217171}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D94C04B0-EAB4-417F-9120-45F11450059E}
+	EndGlobalSection
+EndGlobal
