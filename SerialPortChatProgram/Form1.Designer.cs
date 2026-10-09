@@ -28,12 +28,57 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Text = "Form1";
+            comboBox1 = new ComboBox();
+            button1 = new Button();
+            button2 = new Button();
+            SuspendLayout();
+            // 
+            // comboBox1
+            // 
+            comboBox1.FormattingEnabled = true;
+            comboBox1.Location = new Point(12, 12);
+            comboBox1.Name = "comboBox1";
+            comboBox1.Size = new Size(121, 23);
+            comboBox1.TabIndex = 0;
+            comboBox1.SelectedIndexChanged += comboBox1_SelectedIndexChanged;
+            // 
+            // button1
+            // 
+            button1.Location = new Point(139, 11);
+            button1.Name = "button1";
+            button1.Size = new Size(75, 24);
+            button1.TabIndex = 1;
+            button1.Text = "Bağlan";
+            button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click;
+            // 
+            // button2
+            // 
+            button2.Location = new Point(220, 11);
+            button2.Name = "button2";
+            button2.Size = new Size(89, 24);
+            button2.TabIndex = 2;
+            button2.Text = "Bağlantıyı Kes";
+            button2.UseVisualStyleBackColor = true;
+            // 
+            // Form1
+            // 
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(856, 450);
+            Controls.Add(button2);
+            Controls.Add(button1);
+            Controls.Add(comboBox1);
+            Name = "Form1";
+            Text = "Form1";
+            Load += Form1_Load;
+            ResumeLayout(false);
         }
 
         #endregion
+
+        private ComboBox comboBox1;
+        private Button button1;
+        private Button button2;
     }
 }
