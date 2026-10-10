@@ -31,6 +31,9 @@
             comboBox1 = new ComboBox();
             button1 = new Button();
             button2 = new Button();
+            textBox1 = new TextBox();
+            textBox2 = new TextBox();
+            button3 = new Button();
             SuspendLayout();
             // 
             // comboBox1
@@ -61,11 +64,41 @@
             button2.Text = "Bağlantıyı Kes";
             button2.UseVisualStyleBackColor = true;
             // 
+            // textBox1
+            // 
+            textBox1.Location = new Point(12, 40);
+            textBox1.Multiline = true;
+            textBox1.Name = "textBox1";
+            textBox1.Size = new Size(297, 208);
+            textBox1.TabIndex = 3;
+            textBox1.TextChanged += textBox1_TextChanged;
+            // 
+            // textBox2
+            // 
+            textBox2.Location = new Point(12, 255);
+            textBox2.Name = "textBox2";
+            textBox2.Size = new Size(238, 23);
+            textBox2.TabIndex = 4;
+            textBox2.Text = "Mesaj:";
+            textBox2.TextChanged += textBox2_TextChanged;
+            // 
+            // button3
+            // 
+            button3.Location = new Point(253, 254);
+            button3.Name = "button3";
+            button3.Size = new Size(56, 24);
+            button3.TabIndex = 5;
+            button3.Text = "Gönder";
+            button3.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(856, 450);
+            Controls.Add(button3);
+            Controls.Add(textBox2);
+            Controls.Add(textBox1);
             Controls.Add(button2);
             Controls.Add(button1);
             Controls.Add(comboBox1);
@@ -73,6 +106,7 @@
             Text = "Form1";
             Load += Form1_Load;
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
@@ -80,5 +114,8 @@
         private ComboBox comboBox1;
         private Button button1;
         private Button button2;
+        private TextBox textBox1;
+        private TextBox textBox2;
+        private Button button3;
     }
 }

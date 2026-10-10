@@ -32,7 +32,7 @@ namespace SerialPortChatProgram
 
         private void button1_Click(object sender, EventArgs e)
         {
-            
+
             try
             {
                 serialPort1.PortName = comboBox1.Text;
@@ -55,12 +55,12 @@ namespace SerialPortChatProgram
             {
                 MessageBox.Show("Bağlantı Hatası" + ex.Message, "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-                            
+
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            try 
+            try
             {
                 serialPort1.Close();
 
@@ -71,7 +71,7 @@ namespace SerialPortChatProgram
                 comboBox1.Enabled = true;
 
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show("Port kapatılırken hata oluştu: " + ex.Message, "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -82,6 +82,34 @@ namespace SerialPortChatProgram
             {
                 serialPort1.Close();
             }
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox2_TextChanged(object sender, EventArgs e)
+        {
+            if (serialPort1.IsOpen)
+            {
+                serialPort1.Write(textBox1.Text);
+                textBox2.Clear();
+            }
+        }
+
+        public delegate void writeData(string data);
+
+        public void textBoxWrite(string data)
+        {
+            textBox2.AppendText(data);
+        }
+
+        private void serialPort1_DataReceived(object sender, SerialDataReceivedEventArgs e)
+        {
+            string dataReceived = serialPort1.ReadExisting();
+            textBox1.Invoke(new writeData(textBoxWrite), dataReceived); 
+
         }
 
     }
