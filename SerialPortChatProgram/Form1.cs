@@ -1,21 +1,18 @@
-using System.Diagnostics;
 using System.IO.Ports;
 
 namespace SerialPortChatProgram
 {
     public partial class Form1 : Form
     {
-
         private SerialPort serialPort1 = new SerialPort();
 
         public Form1()
         {
             InitializeComponent();
-        }
 
-        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
+            // Olay aboneliği: serialPort1 tasarımcıyla eklenmediği için
+            // DataReceived'i burada elle bağlamak zorundayız.
+            serialPort1.DataReceived += serialPort1_DataReceived;
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -25,92 +22,134 @@ namespace SerialPortChatProgram
                 comboBox1.Items.Add(seriPort);
             }
 
+            if (comboBox1.Items.Count > 0)
+            {
+                comboBox1.SelectedIndex = 0;
+            }
+
+            textBox1.ReadOnly = true;
+            textBox1.ScrollBars = ScrollBars.Vertical;
+            textBox2.Clear();
+
             button1.Enabled = true;
             button2.Enabled = false;
-
+            button3.Enabled = false;
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-
             try
             {
                 serialPort1.PortName = comboBox1.Text;
-                // Baud Rate: 9600
                 serialPort1.BaudRate = 9600;
-                // This port uses 8E1
                 serialPort1.Parity = Parity.Even;
                 serialPort1.DataBits = 8;
                 serialPort1.StopBits = StopBits.One;
 
                 serialPort1.Open();
 
-                MessageBox.Show("Port Bağlantısı Gerçekleşti.");
-
                 button1.Enabled = false;
                 button2.Enabled = true;
+                button3.Enabled = true;
                 comboBox1.Enabled = false;
+
+                textBox1.AppendText($"[{comboBox1.Text} bağlandı]{Environment.NewLine}");
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Bağlantı Hatası" + ex.Message, "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Bağlantı hatası: " + ex.Message, "Hata",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
             try
             {
-                serialPort1.Close();
-
-                MessageBox.Show("Bağlantı kapatıldı.", "Bilgi", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                if (serialPort1.IsOpen)
+                {
+                    serialPort1.Close();
+                }
 
                 button1.Enabled = true;
                 button2.Enabled = false;
+                button3.Enabled = false;
                 comboBox1.Enabled = true;
 
+                textBox1.AppendText($"[bağlantı kapatıldı]{Environment.NewLine}");
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Port kapatılırken hata oluştu: " + ex.Message, "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            if (serialPort1 != null && serialPort1.IsOpen)
-            {
-                serialPort1.Close();
+                MessageBox.Show("Port kapatılırken hata oluştu: " + ex.Message, "Hata",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
-        private void textBox1_TextChanged(object sender, EventArgs e)
+        private void button3_Click(object sender, EventArgs e)
         {
-
+            Gonder();
         }
 
-        private void textBox2_TextChanged(object sender, EventArgs e)
+        private void textBox2_KeyDown(object sender, KeyEventArgs e)
         {
-            if (serialPort1.IsOpen)
+            if (e.KeyCode == Keys.Enter)
             {
-                serialPort1.Write(textBox1.Text);
+                e.SuppressKeyPress = true;
+                Gonder();
+            }
+        }
+
+        private void Gonder()
+        {
+            if (!serialPort1.IsOpen)
+            {
+                return;
+            }
+
+            string mesaj = textBox2.Text;
+            if (string.IsNullOrEmpty(mesaj))
+            {
+                return;
+            }
+
+            try
+            {
+                // Satır sonu, karşı tarafın mesaj sınırını bulabilmesi için.
+                serialPort1.Write(mesaj + "\n");
+                textBox1.AppendText($"<ben> {mesaj}{Environment.NewLine}");
                 textBox2.Clear();
             }
-        }
-
-        public delegate void writeData(string data);
-
-        public void textBoxWrite(string data)
-        {
-            textBox2.AppendText(data);
+            catch (Exception ex)
+            {
+                MessageBox.Show("Gönderilemedi: " + ex.Message, "Hata",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void serialPort1_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
-            string dataReceived = serialPort1.ReadExisting();
-            textBox1.Invoke(new writeData(textBoxWrite), dataReceived); 
+            // Bu metot arayüz thread'inde DEĞİL, SerialPort'un kendi
+            // arka plan thread'inde çalışır. Ekrana yazmak için Invoke şart.
+            string gelen = serialPort1.ReadExisting();
 
+            if (!IsHandleCreated || IsDisposed)
+            {
+                return;
+            }
+
+            textBox1.Invoke(new Action(() => textBox1.AppendText(gelen)));
         }
 
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            serialPort1.DataReceived -= serialPort1_DataReceived;
+
+            if (serialPort1.IsOpen)
+            {
+                serialPort1.Close();
+            }
+
+            serialPort1.Dispose();
+        }
     }
 }

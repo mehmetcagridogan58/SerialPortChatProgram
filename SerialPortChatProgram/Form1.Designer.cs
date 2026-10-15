@@ -43,7 +43,6 @@
             comboBox1.Name = "comboBox1";
             comboBox1.Size = new Size(121, 23);
             comboBox1.TabIndex = 0;
-            comboBox1.SelectedIndexChanged += comboBox1_SelectedIndexChanged;
             // 
             // button1
             // 
@@ -63,6 +62,7 @@
             button2.TabIndex = 2;
             button2.Text = "Bağlantıyı Kes";
             button2.UseVisualStyleBackColor = true;
+            button2.Click += button2_Click;
             // 
             // textBox1
             // 
@@ -71,7 +71,8 @@
             textBox1.Name = "textBox1";
             textBox1.Size = new Size(297, 208);
             textBox1.TabIndex = 3;
-            textBox1.TextChanged += textBox1_TextChanged;
+            textBox1.ReadOnly = true;
+            textBox1.ScrollBars = ScrollBars.Vertical;
             // 
             // textBox2
             // 
@@ -79,8 +80,7 @@
             textBox2.Name = "textBox2";
             textBox2.Size = new Size(238, 23);
             textBox2.TabIndex = 4;
-            textBox2.Text = "Mesaj:";
-            textBox2.TextChanged += textBox2_TextChanged;
+            textBox2.KeyDown += textBox2_KeyDown;
             // 
             // button3
             // 
@@ -90,6 +90,7 @@
             button3.TabIndex = 5;
             button3.Text = "Gönder";
             button3.UseVisualStyleBackColor = true;
+            button3.Click += button3_Click;
             // 
             // Form1
             // 
@@ -103,7 +104,8 @@
             Controls.Add(button1);
             Controls.Add(comboBox1);
             Name = "Form1";
-            Text = "Form1";
+            Text = "Seri Port Sohbet";
+            FormClosing += Form1_FormClosing;
             Load += Form1_Load;
             ResumeLayout(false);
             PerformLayout();
